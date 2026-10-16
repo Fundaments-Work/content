@@ -1,0 +1,78 @@
+{
+  "$comment": "Canonical support channels for every Fundaments.work product. This file is the ONLY place a donation or funding URL is written by hand. Consumers copy it in; they never edit their own copy. Format: JSON, so every consumer can read it with zero dependencies.",
+  "channels": [
+    {
+      "id": "buyMeMomo",
+      "name": "Buy Me Momo",
+      "url": "https://buymemomo.com/usefundaments",
+      "env": "HUGO_SUPPORT_BUY_ME_MOMO",
+      "description": "Pay from Nepal with eSewa, Khalti or Connect IPS, or by card from anywhere.",
+      "featured": true
+    },
+    {
+      "id": "githubSponsors",
+      "name": "GitHub Sponsors",
+      "url": "",
+      "env": "HUGO_SUPPORT_GITHUB_SPONSORS",
+      "description": "Monthly or one-time, through your GitHub account.",
+      "featured": false
+    },
+    {
+      "id": "openCollective",
+      "name": "Open Collective",
+      "url": "",
+      "env": "HUGO_SUPPORT_OPEN_COLLECTIVE",
+      "description": "Every donation and expense is published in the open.",
+      "featured": false
+    },
+    {
+      "id": "liberapay",
+      "name": "Liberapay",
+      "url": "",
+      "env": "HUGO_SUPPORT_LIBERAPAY",
+      "description": "Recurring donations through a non-profit platform.",
+      "featured": false
+    },
+    {
+      "id": "patreon",
+      "name": "Patreon",
+      "url": "",
+      "env": "HUGO_SUPPORT_PATREON",
+      "description": "A monthly membership.",
+      "featured": false
+    },
+    {
+      "id": "kofi",
+      "name": "Ko-fi",
+      "url": "",
+      "env": "HUGO_SUPPORT_KOFI",
+      "description": "A one-off tip. No account needed.",
+      "featured": false
+    },
+    {
+      "id": "buyMeACoffee",
+      "name": "Buy Me a Coffee",
+      "url": "",
+      "env": "HUGO_SUPPORT_BUY_ME_A_COFFEE",
+      "description": "A one-off tip. No account needed.",
+      "featured": false
+    },
+    {
+      "id": "paypal",
+      "name": "PayPal",
+      "url": "",
+      "env": "HUGO_SUPPORT_PAYPAL",
+      "description": "A direct one-off donation.",
+      "featured": false
+    },
+    {
+      "id": "custom",
+      "name": "",
+      "nameEnv": "HUGO_SUPPORT_CUSTOM_LABEL",
+      "url": "",
+      "env": "HUGO_SUPPORT_CUSTOM_URL",
+      "description": "Another way to give.",
+      "featured": false
+    }
+  ]
+}

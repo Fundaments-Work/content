@@ -43,13 +43,18 @@ Cloudflare Pages, where sibling directories do not exist. The rule that
 satisfies all three:
 
 1. Resolve a source — an explicit override, else a local checkout, else raw
-   GitHub at a pinned commit.
+   GitHub (at the commit recorded in the lock, else the default branch).
 2. Write the generated copy into the consumer **and commit it**. The committed
    copy is the fallback when the network is unavailable; that is why a failed
    fetch must degrade to the committed file and never to a hardcoded value.
-3. Record the commit in `content.lock.json`.
+   It is also why this repo cannot change a deployed site on its own.
+3. Record the content hash, and the commit when one was read, in
+   `content.lock.json`.
 4. Re-run the sync in CI and fail on any diff. Without this step the lock is
    decoration.
+
+This repo **must be public**. Consumers fetch it unauthenticated over HTTPS, and
+a private repo would return 404 in CI while looking fine locally.
 
 ## Consumers
 
@@ -81,5 +86,9 @@ pnpm sync:content        # landing sites: regenerates the committed copy
 pnpm check:content       # apps: fails until you update the literal
 ```
 
-Order matters. This repo is the commit others pin against, so push it first and
-record the resulting SHA in each consumer's lock.
+Order matters: push here first. Syncing a consumer against an unpushed edit locks in bytes that do
+not exist on the remote yet, and CI will disagree with you.
+
+After pushing, the two landing sites' CI gates start reading this file and will report a stale
+copy until you re-run `pnpm sync:content` and commit the result. That is the gate working, not a
+failure.

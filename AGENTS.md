@@ -62,8 +62,9 @@ Consumers are read-only. If one of them looks wrong, the fix belongs here.
 2. Empty values are meaningful. A channel with `"url": ""` is a channel that is
    known but not yet configured; consumers hide it rather than dropping it, which
    is what keeps ordering stable across syncs.
-3. Bump nothing. There is no version field — consumers pin by commit, and the
-   lock they record is a content hash, not a schema number.
+3. Bump nothing. There is no version field. Consumers record a hash of this
+   file's contents, and optionally the commit they read it at, in
+   `content.lock.json`.
 4. Update the consumer table above if you add a consumer.
 
 ## Changing something
@@ -75,5 +76,14 @@ pnpm sync:content        # landing sites: regenerates the committed copy
 pnpm check:content       # apps: fails until you update the literal
 ```
 
-Push here **first**. Consumers pin the commit that contains the change, so a
-consumer synced against an unpushed edit pins a commit that does not exist.
+Push here **first**. A consumer that syncs from a sibling checkout records only
+the content hash (`commit` stays `null`); one that reads from
+`raw.githubusercontent` records the commit it read. Either way, syncing against an
+unpushed edit locks in bytes that do not exist on the remote yet, and CI will
+disagree with you.
+
+Note that `commit: null` is not a weakness. What a site actually serves is its
+own **committed** generated copy, so a change here cannot alter a deployed site
+without a sync and a commit. What `null` buys is that CI reads `main` and
+raises the alarm the moment this file changes — which is the drift signal you
+want, rather than a pin that would never notice.

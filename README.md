@@ -89,6 +89,6 @@ pnpm check:content       # apps: fails until you update the literal
 Order matters: push here first. Syncing a consumer against an unpushed edit locks in bytes that do
 not exist on the remote yet, and CI will disagree with you.
 
-After pushing, the two landing sites' CI gates start reading this file and will report a stale
-copy until you re-run `pnpm sync:content` and commit the result. That is the gate working, not a
-failure.
+After you change a file here, the landing sites' CI gates start reading it and will report their
+committed copy as stale until you re-run `pnpm sync:content` and commit the result. That is the
+gate working, not a failure.

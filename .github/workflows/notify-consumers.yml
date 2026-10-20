@@ -1,0 +1,39 @@
+name: Notify Content Consumers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.json'
+      - '*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch to Consumers
+        env:
+          GH_TOKEN: ${{ secrets.STUDIO_SYNC_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::STUDIO_SYNC_TOKEN secret is not set; skipping automated consumer dispatch."
+            exit 0
+          fi
+
+          CONSUMERS=(
+            "Fundaments-Work/fundaments-landing"
+            "Fundaments-Work/manang-landing"
+            "Fundaments-Work/theorem-landing"
+          )
+
+          for repo in "${CONSUMERS[@]}"; do
+            echo "Notifying $repo..."
+            gh api "repos/$repo/dispatches" \
+              -f event_type=content-updated \
+              -F "client_payload[source]=content" \
+              -F "client_payload[sha]=${{ github.sha }}" || echo "Failed to dispatch to $repo (check repo exists & permissions)"
+          done
